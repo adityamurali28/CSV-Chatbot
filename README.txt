@@ -11,6 +11,7 @@ This project is a local, private chatbot that allows natural language querying o
 - **ChromaDB**: Local vector store for storing and retrieving document embeddings
 - **mxbai-embed-large**: Embedding model used to convert CSV data into vector format
 - **Car_sales.csv**: Source of structured tabular data for the chatbot
+-**Streamlit**for web based UI
 
 ---
 

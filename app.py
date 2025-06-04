@@ -4,33 +4,45 @@ import pandas as pd
 import numpy as np
 from Vector import retriever
 import streamlit as st
+import os
 
 model = OllamaLLM(model ="llama3.2")
 template = """
-You are an expert who understood the car details in the car_sales.csv and answering questions
+You are a car sales data assistant. Use ONLY the context below to answer the question.
 
+If the answer is not found in the context, reply with "I couldn't find that information in the uploaded car sales data."
 
+### Context:
+{context}
 
+### Question:
+{question}
 
-
-Here is the question to answer: {question}
+### Answer:
 """
 prompt = ChatPromptTemplate.from_template(template)
 chain = prompt | model
 
-# Streamlit UI
+
+
 st.title("🚗 Car sales Q&A Bot")
 st.markdown("Hi! Please ask your query on the car sales!")
 
-# Input field
 question = st.text_input("Your question:", "")
 
 if question:
     with st.spinner("Thinking..."):
-        Price = retriever.invoke(question)
-        result = chain.invoke({"Price": Price, "question": question})
+        docs = retriever.invoke(question)
+        context = "\n\n".join([doc.page_content for doc in docs])
+        result = chain.invoke({"question": question, "context": context})
         st.markdown("### 🤖 Answer")
         st.write(result)
-        st.markdown("### 📝 Relevant Price")
-        st.write(Price)
+        st.markdown("### 📝 Relevant Records")
+        st.write(context)
 
+
+
+
+data_location = "./tmp_chroma_store"
+if os.path.exists(data_location):
+    shutil.rmtree(data_location)

@@ -23,10 +23,4 @@ This project is a local, private chatbot that allows natural language querying o
 
 ---
 
-## 🏗️ Setup Instructions
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/adityamurali28/CSV-Chatbot.git
-cd csv-chatbot-langchain
